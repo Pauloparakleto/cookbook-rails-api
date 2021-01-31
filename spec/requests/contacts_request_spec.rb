@@ -11,16 +11,16 @@ RSpec.describe V1::ContactsController, type: :controller do
         end
     end
 
-    describe "Show action raise record not found" do
-        before do
-            def show
-                @contact = Contact.find(3)
-            end
-        end
-
+    describe "Show action" do
+        it "returns data of an single contact" do
+            get :contact, id: 1, format: :json
+            parsed_response = JSON.parse(response.body)
+            expect(parsed_response['id']).to_not be_nil
+          end
+                           
         it "must return no content on head" do
-            get :show
-            expect(response).to 
+            get v1_contacts_path(Contact.first)
+            expect(response).to have_http_status(:no_content)
         end
     end
 
